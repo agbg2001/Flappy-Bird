@@ -69,19 +69,37 @@ public class BirdScript : MonoBehaviour
     }
 
     // Is called when the collider of the bird intersects with an other collider 
-    void OnCollisionEnter2D()
+    void OnCollisionEnter2D(Collision2D collidedObject)
     {
-        // Time scale = 0.0f pauses the game, 
-        // All frame dependent functions are not longer called e.g. FixedUpdate
+
+        
+        //if statemen
+        //if bird collides with untagged object then reset game
+        //if bird collides with tag "end" then enable a different screen
+        //Debug.Log(collidedObject.gameObject.tag);   
         Time.timeScale = 0.0f;
 
+        if (collidedObject.gameObject.tag == "end") {
+ 
+            Debug.Log("this is the end"); 
+            GetComponent<SpriteRenderer>().color = Color.yellow;
+
+            GameObject.FindGameObjectWithTag("background").GetComponent<SpriteRenderer>().enabled = false;
+            GameObject.FindGameObjectWithTag("Finish").GetComponent<SpriteRenderer>().enabled = true;
+        
+        }
+        // Time scale = 0.0f pauses the game, 
+        // All frame dependent functions are not longer called e.g. FixedUpdate
+        
+        else{
         // Colors the bird "black"
         GetComponent<SpriteRenderer>().color = Color.black;
 
         // Set the game over sprite as background, disable normal background
+        
         GameObject.FindGameObjectWithTag("background").GetComponent<SpriteRenderer>().enabled = false;
         GameObject.FindGameObjectWithTag("gameover").GetComponent<SpriteRenderer>().enabled = true;
-
+        }
         // Help flag, indicates that we have to wait until the player restarts the game
         alive = false;
     }
@@ -100,8 +118,14 @@ public class BirdScript : MonoBehaviour
         // Reset the background
         GameObject.FindGameObjectWithTag("background").GetComponent<SpriteRenderer>().enabled = true;
         GameObject.FindGameObjectWithTag("gameover").GetComponent<SpriteRenderer>().enabled = false;
+        GameObject.FindGameObjectWithTag("Finish").GetComponent<SpriteRenderer>().enabled = false;
 
         // Unpause the game, FixedUpdate is called again every frame.
         Time.timeScale = 1.0f;
+    }
+
+    void FinishGame()
+    {
+
     }
 }
